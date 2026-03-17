@@ -1,0 +1,28 @@
+:root { color-scheme: light; }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #fafafa;
+  color: #222;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+}
+
+th { background: #f2f2f2; }
+tr:nth-child(even) { background: #fcfcfc; }
+tr:hover { background: #f1f7ff; }
+
+input[type="file"] { margin-bottom: 15px; }
