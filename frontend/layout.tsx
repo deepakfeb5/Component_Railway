@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Mouser BOM Tool",
-  description: "Upload CSV to get Mouser pricing and alternatives"
+  description: "Upload CSV to get Mouser pricing data"
 };
 
 export default function RootLayout({
