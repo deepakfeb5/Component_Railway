@@ -33,11 +33,8 @@ export default function Home() {
   return (
     <div>
       <h1>Mouser BOM Tool</h1>
-
       <input type="file" accept=".csv" onChange={uploadCsv} />
-
       {loading && <p>Processing…</p>}
-
       {results.length > 0 && (
         <>
           <ResultsTable rows={results} />
