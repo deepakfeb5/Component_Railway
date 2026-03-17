@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mouser BOM Simple UI</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background: #eee; }
+  </style>
+</head>
+<body>
+
+<h1>Mouser BOM Simple UI</h1>
+
+<input type="file" id="fileInput" accept=".csv">
+<button onclick="upload()">Upload</button>
+
+<p id="status"></p>
+
+<table id="resultsTable" style="display:none;">
+  <thead>
+    <tr>
+      <th>Part Number</th>
+      <th>Qty</th>
+      <th>Manufacturer</th>
+      <th>Lifecycle</th>
+      <th>Stock</th>
+      <th>Unit Price</th>
+      <th>Total Price</th>
+      <th>Alternates</th>
+      <th>Error</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<h2 id="totalCost"></h2>
+
+<script>
+const BACKEND = "https://YOUR_BACKEND.up.railway.app";
+
+async function upload() {
+  const file = document.getElementById("fileInput").files[0];
+  if (!file) return alert("Select CSV");
+
+  const form = new FormData();
+  form.append("file", file);
+
+  document.getElementById("status").innerText = "Processing...";
+
+  const res = await fetch(`${BACKEND}/process-bom`, {
+    method: "POST",
+    body: form
+  });
+
+  const data = await res.json();
+  const tbody = document.querySelector("#resultsTable tbody");
+  tbody.innerHTML = "";
+
+  data.results.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.PartNumber}</td>
+      <td>${r.Quantity}</td>
+      <td>${r.Manufacturer}</td>
+      <td>${r.Lifecycle}</td>
+      <td>${r.Stock}</td>
+      <td>${r.UnitPrice}</td>
+      <td>${r.TotalPrice}</td>
+      <td>${r.Alternates?.join(", ") || "None"}</td>
+      <td>${r.Error}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("resultsTable").style.display = "table";
+  document.getElementById("totalCost").innerText = "Total Cost: $" + data.total_cost;
+  document.getElementById("status").innerText = "";
+}
+</script>
+
+</body>
+</html>
